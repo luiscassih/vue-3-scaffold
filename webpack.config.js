@@ -6,6 +6,7 @@ const copyWebpackPlugin = require('copy-webpack-plugin');
 module.exports = {
   entry: path.resolve(__dirname, './src/main.ts'),
   mode: process.env.NODE_ENV || 'development',
+  devtool: process.env.NODE_ENV == 'production' ? 'source-map' : 'cheap-module-eval-source-map',
   output: {
     filename: "[name].js",
     path: path.resolve(__dirname, "./dist"),
@@ -74,6 +75,10 @@ module.exports = {
     }),
     new copyWebpackPlugin({
       patterns:[{from: 'src/public', to: '.'}] 
+    }),
+    new webpack.DefinePlugin({
+      __VUE_OPTIONS_API__: true,
+      __VUE_PROD_DEVTOOLS__: false
     })
   ],
   devServer: {
